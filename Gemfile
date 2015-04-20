@@ -48,3 +48,5 @@ group :development, :test do
   gem 'sqlite3'
   gem 'sqlite3-ruby', '~> 1.3.0', :require => 'sqlite3'
 end
+
+gem 'devise', '3.4.0'

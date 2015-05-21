@@ -1,0 +1,236 @@
+# == Schema Information
+#
+# Table name: livres
+#
+#  id          :integer          not null, primary key
+#  titre       :string
+#  editeur_id  :integer
+#  description :text
+#  annee       :integer
+#  langue      :string
+#  isbn        :string
+#  alire       :boolean
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+class Livre < ActiveRecord::Base
+	
+	belongs_to :editeur, inverse_of: :livre
+	has_many :auteurs_livres
+	has_many :genres_livres
+	has_many :auteurs, :through => :auteurs_livres, :source => :auteur_id
+	has_many :genres, :through => :genres_livres, :source => :genre_id 
+	accepts_nested_attributes_for :auteurs
+	validates :titre, presence: true, uniqueness: { case_sensitive: false }
+	validates :editeur_id, presence: true
+	validates :description, presence: true
+	validates :langue, presence: true
+	validates :annee, numericality: { only_integer: true }
+	validates :isbn, presence: true, uniqueness: { case_sensitive: false }
+	#validates :alire, presence: true, inclusion: { in: [true, false] }
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: auteurs
+#
+#  id            :integer          not null, primary key
+#  prenom_auteur :string
+#  nom_auteur    :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
+class Auteur < ActiveRecord::Base
+
+	
+	has_many :auteurs_livres
+	has_many :livres, :through => :auteurs_livres, :source => "livre_id"
+	
+	validates :nom_auteur, presence: true, uniqueness: { case_sensitive: false, scope: :prenom_auteur }
+	validates :prenom_auteur, presence: true, uniqueness: { case_sensitive: false, scope: :nom_auteur}
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: editeurs
+#
+#  id          :integer          not null, primary key
+#  nom_editeur :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+class Editeur < ActiveRecord::Base
+	
+	has_many :livres, inverse_of: :editeur
+	
+	validates :nom_editeur, presence: true, uniqueness: { case_sensitive: false }
+end
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: genres
+#
+#  id         :integer          not null, primary key
+#  nom_genre  :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class Genre < ActiveRecord::Base
+
+	has_many :genres_livres
+	has_many :livres, :through => :genres_livres, :source => "livre_id"
+	
+	validates :nom_genre, presence: true, uniqueness: { case_sensitive: false }
+end
+ 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+# == Schema Information
+#
+# Table name: auteurs_livres
+#
+#  id         :integer          not null, primary key
+#  auteur_id  :integer
+#  livre_id   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class AuteurLivre < ActiveRecord::Base
+
+	belongs_to :auteur , class_name: "Auteur", foreign_key: "auteur_id"
+	belongs_to :livre, class_name: "Livre", foreign_key: "livre_id"
+	validates :auteur_id, presence: true
+	validates :livre_id, presence: true
+end
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: genres_livres
+#
+#  id         :integer          not null, primary key
+#  genre_id   :integer
+#  livre_id   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class GenreLivre < ActiveRecord::Base
+
+	belongs_to :genre, class_name: "Genre", foreign_key: "genre_id"
+	belongs_to :livre, class_name: "Livre", foreign_key: "livre_id"
+	validates :genre_id, presence: true
+	validates :livre_id, presence: true
+end
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CreateLivres < ActiveRecord::Migration
+  def change
+    create_table :livres do |t|
+		t.string :titre null: false
+		t.integer :editeur_id null: false
+		t.text :description null: false
+		t.integer :annee null: false
+		t.string :langue null: false
+		t.string :isbn null: false
+		t.boolean :alire null: false
+		t.timestamps null: false
+    end
+	
+	add_index :livres, :langue
+	add_index :livres, :annee
+	add_foreign_key :livres, :editeurs, name: :editeur_id
+	add_index :livres, :titre, unique: true
+	add_index :livres, :isbn, unique: true
+end
+end
+		
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CreateGenresLivres < ActiveRecord::Migration
+  def change
+    create_table :genres_livres do |t|
+		t.integer :genre_id null: false
+		t.integer :livre_id null: false
+		t.references :genre
+		t.references :livre
+      t.timestamps null: false
+    end
+	add_index :genres_livres, :genre_id
+    add_index :genres_livres, :livre_id
+    add_index :genres_livres, [:genre_id, :livre_id], unique: true
+  end
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CreateAuteursLivres < ActiveRecord::Migration
+  def change
+    create_table :auteurs_livres do |t|
+		t.integer :auteur_id null: false
+		t.integer :livre_id null: false
+		t.references :auteur
+		t.references :livre
+		t.timestamps null: false
+    end
+	add_index :auteurs_livres, :auteur_id
+    add_index :auteurs_livres, :livre_id
+    add_index :auteurs_livres, [:auteur_id, :livre_id], unique: true
+  end
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CreateAuteurs < ActiveRecord::Migration
+  def change
+    create_table :auteurs do |t|
+		t.string :prenom_auteur null: false
+		t.string :nom_auteur null: false
+		t.timestamps null: false
+    end
+	add_index :auteurs, :nom_auteur
+	add_index :auteurs, [:prenom_auteur, :nom_auteur], unique: true
+  end
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CreateGenres < ActiveRecord::Migration
+  def change
+    create_table :genres do |t|
+		t.string :nom_genre null: false
+		t.timestamps null: false
+    end
+	add_index :genres, :nom_genre, unique: true
+  end
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CreateEditeurs < ActiveRecord::Migration
+  def change
+    create_table :editeurs do |t|
+		t.string :nom_editeur null: false
+		t.timestamps null: false
+    end
+	add_index :editeurs, :nom_editeur, unique: true
+  end
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

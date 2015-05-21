@@ -1,0 +1,29 @@
+﻿<h2>Modifier les informations personnelles</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div><%= f.label :email, "Adresse Email :" %><br />
+  <%= f.email_field :email, autofocus: true %></div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>En attente de confirmation pour l'adresse email suivante : <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div><%= f.label :password, "Mot de passe :" %> <i>(Ne rien écrire si vous ne souhaitez pas modifier le mot de passe)</i><br />
+    <%= f.password_field :password, autocomplete: "off" %></div>
+
+  <div><%= f.label :password_confirmation, "Confirmation du mot de passe" %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
+
+  <div><%= f.label :current_password, "Mot de passe actuel :" %> <i>(Nécessaire afin de valider les changements)</i><br />
+    <%= f.password_field :current_password, autocomplete: "off" %></div>
+
+  <div><%= f.submit "Valider" %></div>
+<% end %>
+
+<h3>Supprimer mon compte</h3>
+
+<p><%= button_to "Supprimer mon compte", registration_path(resource_name), data: { confirm: "Etes-vous sûr?" }, method: :delete %></p>
+
+<%= link_to "Retour", :back %>

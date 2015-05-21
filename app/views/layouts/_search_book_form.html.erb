@@ -1,0 +1,23 @@
+﻿<%= form_tag livres_path, method: :get do %>
+
+  	<div class="titre">
+		<%= label_tag :titre, "Titre : "%>
+		<%= text_field_tag :titre, params[:titre], placeholder: "Entrez ici le titre du livre"%>
+	</div>
+	<div class="langue">
+		<%= label_tag :langue, "Langue : "%>
+		<%= text_field_tag :langue, params[:langue], placeholder: "Entrez ici la langue du livre"%>
+	</div>
+	<div class="annee">
+		<% d=DateTime.now.year%>
+		<%= label_tag :annee, "Année de parution : "%>
+		<%= number_field_tag :annee, params[:annee],in: 1..d, step: 1 %>
+	</div>
+	<div class="isbn">
+		<%= label_tag :isbn, "ISBN : "%>
+		<%= text_field_tag :isbn, params[:isbn], placeholder: "Entrez ici l'ISBN du livre"%>
+	</div>
+<div class="actions">
+  <%= submit_tag "Valider" %>
+</div>
+<% end %>

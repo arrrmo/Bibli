@@ -1,0 +1,166 @@
+﻿fr:
+  activerecord:
+    models:
+      user:
+        zero: "Utilisateur"
+        one: "Utilisateur"
+        few: "Utilisateurs"
+        other: "Utilisateurs"
+      livre:
+        zero: "Livre"
+        one: "Livre"
+        few: "Livres"
+        other: "Livres"
+      auteur:
+        zero: "Auteur"
+        one: "Auteur"
+        few: "Auteurs"
+        other: "Auteurs"
+      editeur:
+        zero: "Editeur"
+        one: "Editeur"
+        few: "Editeurs"
+        other: "Editeurs"
+      genre:
+        zero: "Genre"
+        one:  "Genre"
+        few: "Genres"
+        other:  "Genres"
+
+  will_paginate:
+    previous_label: "&#8592; Précédent"
+    next_label: "Suivant &#8594;"
+    page_gap: "&hellip;"
+
+    page_entries_info:
+      single_page:
+        zero:  "Aucun %{model} trouvé"
+        one:   "Affichage d'un %{model}"
+        other: "Affichage des %{count} %{model}"
+      single_page_html:
+        zero:  "Aucun %{model} trouvé"
+        one:   "Affichage d' <b>un</b> %{model}"
+        other: "Affichage de <b>tous les&nbsp;%{count}</b> %{model}"
+
+      multi_page: "Affichage des %{model} %{from} - %{to} sur %{count} au total"
+      multi_page_html: "Affichage des %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> sur <b>%{count}</b> au total"
+
+    # models:
+    #   entry:
+    #     zero:  entrée
+    #     one:   entrée
+    #     few:   entrées
+    #     other: entrées
+
+    # line_item:
+    #   page_entries_info:
+    #     single_page:
+    #       zero:  "Your shopping cart is empty"
+    #       one:   "Displaying one item in your cart"
+    #       other: "Displaying all %{count} items"
+    #     multi_page: "Displaying items %{from} - %{to} of %{count} in total"
+# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+ 
+  devise:
+    confirmations:
+      confirmed: 'Votre compte a été confirmé avec succès.'
+      send_instructions: 'Vous allez recevoir un e-mail avec les instructions nécessaires à la confirmation de votre compte dans quelques minutes.'
+      send_paranoid_instructions: 'Si votre e-mail existe dans notre base de données, vous allez bientôt recevoir un e-mail contenant les instructions de confirmation de votre compte.'
+    failure:
+      already_authenticated: "Vous êtes déjà connecté"
+      inactive: "Votre compte n'est pas encore activé."
+      invalid: "%{authentication_keys} ou mot de passe incorrect."
+      locked: "Votre compte est verrouillé."
+      last_attempt: "Vous avez droit à une dernière tentative avant que votre compte ne soit verrouillé."
+      locked: "Votre compte est verrouillé."
+      not_found_in_database: "%{authentication_keys} ou mot de passe incorrect."
+      timeout: "Votre session est expirée. Veuillez vous reconnecter pour continuer."
+      unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+      unconfirmed: "Vous devez confirmer votre compte pour continuer."
+    mailer:
+      confirmation_instructions:
+        subject: "Instructions de confirmation"
+      reset_password_instructions:
+        subject: "Instructions pour changer le mot de passe"
+      unlock_instructions:
+        subject: "Instructions pour déverrouiller le compte"
+    omniauth_callbacks:
+      failure: "Nous n'avons pas pu vous authentifier via %{kind} : '%{reason}'."
+      success: 'Authentifié avec succès via %{kind}.'
+    passwords:
+      no_token: "Vous ne pouvez accéder à cette page sans passer par un e-mail de réinitialisation de mot de passe. Si vous êtes passé par un e-mail de ce type, assurez-vous d'utiliser l'URL complète."
+      send_instructions: 'Vous allez recevoir les instructions de réinitialisation du mot de passe dans quelques instants'
+      send_paranoid_instructions: "Si votre e-mail existe dans notre base de données, vous allez recevoir un lien de réinitialisation par e-mail"
+      updated: 'Votre mot de passe a été édité avec succès, vous êtes maintenant connecté'
+      updated_not_active: 'Votre mot de passe a été changé avec succès.'
+    registrations:
+      destroyed: 'Votre compte a été supprimé avec succès. Nous espérons vous revoir bientôt.'
+      signed_up: 'Bienvenue, vous êtes connecté.'
+      signed_up_but_inactive: "Vous êtes bien enregistré. Vous ne pouvez cependant pas vous connecter car votre compte n'est pas encore activé."
+      signed_up_but_locked: "Vous êtes bien enregistré. Vous ne pouvez cependant pas vous connecter car votre compte est verrouillé."
+      signed_up_but_unconfirmed: 'Un message contenant un lien de confirmation a été envoyé à votre adresse email. Ouvrez ce lien pour confirmer votre compte.'
+      update_needs_confirmation: "Votre compte a bien été mis à jour mais nous devons vérifier votre nouvelle adresse email. Merci de vérifier vos emails et de cliquer sur le lien de confirmation pour finaliser la validation de votre nouvelle adresse."
+      updated: 'Votre compte a été modifié avec succès.'
+    sessions:
+      signed_in: "Connecté avec succès."
+      signed_out: "Déconnecté avec succès."
+      already_signed_out: "Déconnecté avec succès."
+    unlocks:
+      send_instructions: 'Vous allez recevoir les instructions nécessaires au déverrouillage de votre compte dans quelques instants'
+      send_paranoid_instructions: 'Si votre compte existe, vous allez bientôt recevoir un email contenant les instructions pour le déverrouiller.'
+      unlocked: 'Votre compte a été déverrouillé avec succès, veuillez vous connecter pour continuer.'
+    errors:
+      messages:
+        already_confirmed: "a déjà été validé(e), veuillez essayer de vous connecter"
+        confirmation_period_expired: "à confirmer dans les %{period}, merci de faire une nouvelle demande"
+        expired: "a expiré, merci d'en faire une nouvelle demande"
+        not_found: "n'a pas été trouvé(e)"
+        not_locked: "n'était pas verrouillé(e)"
+        not_saved:
+          one: "1 erreur a empêché ce(tte) %{resource} d'être sauvegardé(e) :"
+          other: "%{count} erreurs ont empêché ce(tte) %{resource} d'être sauvegardé(e) :"
+
+  home: "Accueil"
+  help: "Aide"
+  sign_in: "Se connecter"
+  sign_up: "Créer un compte"
+  about: "A propos"
+  contact: "Contact"
+  welcome: "Bienvenue"
+  book_index: "Liste des livres"
+  auth_index: "Liste des auteurs"
+  edit_index: "Liste des éditeurs"
+  genre_index: "Liste des genres"
+  read_index: "Liste des livres à lire"
+  
+  modify_account: "Modifier le compte"
+  sign_out: "Se déconnecter"
+  back: "Retour"
+  add_book: "Ajouter un livre"
+  searches: "Rechercher"
+  lists: "Listes"
+  stats: "Statistiques"
+  auth_search: "Rechercher par auteur"
+  book_search: "Rechercher un livre"
+  edit_search: "Rechercher par éditeur"
+  genre_search: "Rechercher par genre"
+  forgotten_password: "Mot de passe oublié ?"
+  send_validation_instructions_again: "Recevoir à nouveau le mail de validation du compte?"
+  send_unlock_instructions_again: "Recevoir à nouveau le mail de déblocage du compte?"
+  
+  creation_success_message: "La sauvegarde a bien été effectuée !"
+  creation_error_message: "La sauvegarde a échoué ! Veuillez recommencer !"
+  update_success_message: "La modification a bien été effectuée ! "
+  update_error_message: "La modification a échoué ! Veuillez recommencer !"
+  delete_success_message: "Le livre a bien été supprimé !"
+  
+  title: "Titre"
+  author: "Auteur"
+  genre: "Genre"
+  to_read: "A lire ?"
+  
+  stats_nb_books: "Nombre de livres présents dans la base"
+  stats_nb_auths: "Nombre d'auteurs présents dans la base"
+  stats_nb_edits: "Nombre d'éditeurs présents dans la base"
+  stats_nb_genres: "Nombre de genres présents dans la base"
+  stats_nb_users: "Nombre d'utilisateur présents dans la base"

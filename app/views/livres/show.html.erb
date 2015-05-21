@@ -1,0 +1,59 @@
+<h1><%=@livre.titre.titleize%></h1>
+<%i=1%>
+<% @livre.auteurs.each do |auteur| %>
+	<p>
+	  <%="&nbsp &nbsp &nbsp &nbsp".html_safe if i==1%><strong><%="Auteur #{i} :"%></strong>
+		<%=auteur.prenom_auteur.capitalize%>&nbsp<%=auteur.nom_auteur.capitalize%>
+	</p>
+	<%i+=1%>
+<%end%>
+<%j=1%>
+<% @livre.genres.each do |genre| %>
+
+	<p>
+	<strong> <%="Genre #{j} :"%></strong>
+		<%=genre.nom_genre.capitalize%>
+	</p>
+	<%j+=1%>
+<%end%>
+<p>
+ <strong>Description :</strong>
+	<%=@livre.description%>
+</p>
+
+<p>
+ <strong>Editeur :</strong>
+	<%=Editeur.find_by_id(@livre.editeur_id).nom_editeur.capitalize %>
+</p>
+
+<p>
+ <strong>Année :</strong>
+	<%=@livre.annee%>
+</p>
+
+<p>
+ <strong>Langue :</strong>
+	<%=@livre.langue.capitalize %>
+</p>
+
+<p>
+ <strong>ISBN :</strong>
+	<%=@livre.isbn%>
+</p>
+<p>
+ <strong>Livre à lire ? :</strong>
+	<% if @livre.alire? %>
+		<%= "Livre à lire"%>
+		<% else %>
+		<%= "Livre lu"%>
+		<% end %>
+</p>
+
+<% if current_user && current_user.admin? %>
+<%= link_to "Modifier", edit_livre_path(@livre.id) %> |
+<%= link_to "Supprimer", livre_path(@livre.id) , :method => :delete%>
+<%end%>
+<br/>
+<%= link_to t(:back), livres_path%>
+
+

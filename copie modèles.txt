@@ -1,0 +1,243 @@
+# == Schema Information
+#
+# Table name: livres
+#
+#  id          :integer          not null, primary key
+#  titre       :string
+#  editeur_id  :integer
+#  description :text
+#  annee       :integer
+#  langue      :string
+#  isbn        :string
+#  alire       :boolean
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+class Livre < ActiveRecord::Base
+	
+	belongs_to :editeur, inverse_of: :livre
+	has_many :rel_auteur_livres
+	has_many :rel_genre_livres
+	has_many :auteurs, :through => :rel_auteur_livres, :source => "auteur_id"
+	has_many :genres, :through => :rel_genre_livres, :source => "genre_id"
+	
+	validates :titre, presence: true, uniqueness: { case_sensitive: false }
+	validates :editeur_id, presence: true
+	validates :description, presence: true
+	validates :langue, presence: true
+	validates :annee, numericality: { only_integer: true }
+	validates :isbn, presence: true, uniqueness: { case_sensitive: false }
+	#validates :alire, presence: true, inclusion: { in: [true, false] }
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: auteurs
+#
+#  id            :integer          not null, primary key
+#  prenom_auteur :string
+#  nom_auteur    :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+
+class Auteur < ActiveRecord::Base
+
+	
+	has_many :rel_auteur_livres
+	has_many :livres, :through => :rel_auteur_livres, :source => "livre_id"
+	
+	validates :nom_auteur, presence: true, uniqueness: { case_sensitive: false, scope: :prenom_auteur }
+	validates :prenom_auteur, presence: true, uniqueness: { case_sensitive: false, scope: :nom_auteur}
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: editeurs
+#
+#  id          :integer          not null, primary key
+#  nom_editeur :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+class Editeur < ActiveRecord::Base
+	
+	has_many :livres, inverse_of: :editeur
+	
+	validates :nom_editeur, presence: true, uniqueness: { case_sensitive: false }
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: genres
+#
+#  id         :integer          not null, primary key
+#  nom_genre  :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class Genre < ActiveRecord::Base
+
+	has_many :rel_genre_livres
+	has_many :livres, :through => :rel_genre_livres, :source => "livre_id"
+	
+	validates :nom_genre, presence: true, uniqueness: { case_sensitive: false }
+end
+ 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+ # == Schema Information
+#
+# Table name: rel_auteur_livres
+#
+#  id         :integer          not null, primary key
+#  auteur_id  :integer
+#  livre_id   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class RelAuteurLivre < ActiveRecord::Base
+
+	belongs_to :auteur, class_name: "Auteur", foreign_key: "auteur_id"
+	belongs_to :livre, class_name: "Livre", foreign_key: "livre_id"
+	validates :auteur_id, presence: true
+	validates :livre_id, presence: true
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# == Schema Information
+#
+# Table name: rel_genre_livres
+#
+#  id         :integer          not null, primary key
+#  genre_id   :integer
+#  livre_id   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+class RelGenreLivre < ActiveRecord::Base
+
+	belongs_to :genre, class_name: "Genre", foreign_key: "genre_id"
+	belongs_to :livre, class_name: "Livre", foreign_key: "livre_id"
+	validates :genre_id, presence: true
+	validates :livre_id, presence: true
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable,
+		 :confirmable, :lockable
+		 
+	def admin?
+		self.role =='admin'
+	end
+	
+end
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////::
+
+create_table(:users) do |t|
+      ## Database authenticatable
+	  t.string :pseudo, null: false, default:""
+	  t.string :prenom_user, null: false, default:""
+	  t.string :nom_user, null: false, default:""
+      t.string :email,              null: false, default: ""
+      t.string :encrypted_password, null: false, default: ""
+	  t.string :role,null: false, default: ""
+
+      ## Recoverable
+      t.string   :reset_password_token
+      t.datetime :reset_password_sent_at
+
+      ## Rememberable
+      t.datetime :remember_created_at
+
+      ## Trackable
+      t.integer  :sign_in_count, default: 0, null: false
+      t.datetime :current_sign_in_at
+      t.datetime :last_sign_in_at
+      t.string   :current_sign_in_ip
+      t.string   :last_sign_in_ip
+
+      ## Confirmable
+      t.string   :confirmation_token
+      t.datetime :confirmed_at
+      t.datetime :confirmation_sent_at
+      t.string   :unconfirmed_email # Only if using reconfirmable
+
+      ## Lockable
+       t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
+       t.string   :unlock_token # Only if unlock strategy is :email or :both
+       t.datetime :locked_at
+
+
+      t.timestamps
+    end
+
+    add_index :users, :email,                unique: true
+    add_index :users, :reset_password_token, unique: true
+    add_index :users, :confirmation_token,   unique: true
+    add_index :users, :unlock_token,         unique: true
+  end
+  
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:::
+  
+  create_table(:users) do |t|
+      ## Database authenticatable
+	  t.string :pseudo, null: false, default:""
+	  t.string :prenom_user, null: false, default:""
+	  t.string :nom_user, null: false, default:""
+      t.string :email,              null: false, default: ""
+      t.string :encrypted_password, null: false, default: ""
+	  t.string :role,null: false, default: ""
+
+      ## Recoverable
+      t.string   :reset_password_token
+      t.datetime :reset_password_sent_at
+
+      ## Rememberable
+      t.datetime :remember_created_at
+
+      ## Trackable
+      t.integer  :sign_in_count, default: 0, null: false
+      t.datetime :current_sign_in_at
+      t.datetime :last_sign_in_at
+      t.string   :current_sign_in_ip
+      t.string   :last_sign_in_ip
+
+      ## Confirmable
+      t.string   :confirmation_token
+      t.datetime :confirmed_at
+      t.datetime :confirmation_sent_at
+      t.string   :unconfirmed_email # Only if using reconfirmable
+
+      ## Lockable
+       t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
+       t.string   :unlock_token # Only if unlock strategy is :email or :both
+       t.datetime :locked_at
+
+
+      t.timestamps
+    end
+
+    add_index :users, :email,                unique: true
+    add_index :users, :reset_password_token, unique: true
+    add_index :users, :confirmation_token,   unique: true
+    add_index :users, :unlock_token,         unique: true
+  end

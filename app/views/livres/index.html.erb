@@ -1,0 +1,48 @@
+﻿<h1><%=t(:book_index)%></h1>
+<% if current_user && current_user.admin? %>
+<%= link_to t(:add_book), new_livre_path%>
+<%end%>
+
+<br/><br/>
+<div class="apple_pagination page_info">
+      <%= page_entries_info @livres %>
+    </div>
+	<br/>
+<table>
+	<tr>
+       <th><%=t(:title)%></th>
+       <th><%=t(:author)%></th>
+	   <th><%=t(:genre)%></th>
+	   <th><%=t(:to_read)%></th>
+   </tr>
+   <% if @livres %>
+   <% @livres.in_groups_of(1).each do |livres| %>
+	<% livres.select! {|x| !x.nil?} %>
+	<% livres.each do |livre| %>
+	<tr>
+		<td><%= livre.titre.titleize %></td>
+		<td><% livre.auteurs.each do |auteur| %>
+		<%= auteur.prenom_auteur.capitalize %>&nbsp <%= auteur.nom_auteur.capitalize %><br/>
+		<%end%>
+		</td>
+		<td><% livre.genres.each do |genre| %>
+		<%= genre.nom_genre.capitalize %><br/>
+		<%end%>
+		</td>
+		<% if livre.alire? %>
+		<td><%= "Livre à lire"%></td>
+		<% else %>
+		<td><%= "Livre lu"%></td>
+		<% end %>
+		<td><%= link_to image_tag("icons/eye.png", :alt => "Voir"), livre_path(livre.id)%></td>
+   </tr>
+   <% end %>
+   <% end %>
+    <% end %>
+</table>
+<br/>
+<br/>
+<div class="apple_pagination">
+    <%= will_paginate @livres%>
+  </div>
+

@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails'
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+
 # Use SCSS for stylesheets
 gem 'sass-rails'
 # Use Uglifier as compressor for JavaScript assets
@@ -38,11 +38,27 @@ gem 'sdoc',       group: :doc
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
+
 gem 'heroku'
 
-  gem 'sqlite3'
-  gem 'sqlite3-ruby', '~> 1.3.0', :require => 'sqlite3'
+group :development do
+	gem 'sqlite3-ruby', '~> 1.3.0', :require => 'sqlite3'
+	gem 'sqlite3'
+	gem 'mailcatcher'
+	gem 'foreman'
+	gem 'consistency_fail'
+	gem 'annotate', '~> 2.6.8'
+end
 
+group :production do
+	gem 'pg'
+	gem 'rails_12factor'
+	#gem 'puma'
+end
 
 gem 'devise', '3.4.0'
+gem 'will_paginate', '~> 3.0.6'
+gem 'seed_dump', '~> 3.2.2'
+gem 'redcarpet',  '~> 3.1.2'
+gem 'nested_form'
 

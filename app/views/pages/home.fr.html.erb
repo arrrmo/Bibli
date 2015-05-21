@@ -1,0 +1,6 @@
+﻿<h1>Bienvenue dans l'application de gestion de ma bibliothèque</h1>
+<% if user_signed_in? %>
+			   <%= link_to t(:index), livres_path %>
+<% else%>
+<p>Veuillez vous identifier pour accéder aux différentes fonctionnalités de l'application</p>
+<% end %>

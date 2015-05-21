@@ -1,11 +1,73 @@
-﻿<header>
-        <% logo = image_tag("logo.png", :alt => "Application exemple", :class => "round") %>
-		<%= link_to logo, 'home' %>
-        <nav class="round">
-          <ul>
-		    <li><%= link_to "Accueil", 'home' %></li>
-            <li><%= link_to "Aide", 'help' %></li>
-			<li><%= link_to "S'identifier", '#' %></li>
-          </ul>
-        </nav>
+<header>
+  <% logo = image_tag("logo.png", :alt => "Logo livres", :class => "round") %>
+  <%= link_to logo, home_path %>
+		<%= link_to image_tag("flags/png/gb.png", :name =>"lang"), params.merge({locale: "en"}) %>
+		<%= link_to image_tag("flags/png/fr.png", :name => "lang"), params.merge({locale: "fr"}) %>
+		
+  <nav class="round">
+    <ul>
+      <li><%=link_to t(:home), home_path %></li>
+      <li><% if user_signed_in? %>
+			   <%= link_to t(:modify_account), edit_user_registration_path %>
+			   <%= link_to t(:sign_out), destroy_user_session_path, method: :delete %>
+            <% else %>
+              <%= link_to t(:sign_up), new_user_registration_path %>
+              <%= link_to t(:sign_in), new_user_session_path %>
+            <% end %></li>
+    </ul>
+	<% if user_signed_in? %>
+	<ul><center>
+		<li>
+				 <font size="3"> <i><%= t(:welcome) %><strong>
+					<%= current_user.pseudo %>
+				  </strong></i></font>
+		
+		</li></center>
+	</ul><% end %>
+  </nav>
+  
+  <% if user_signed_in? %>
+  <!--<nav class="round" name="menu_rech">
+    <ul>
+      <li><% link_to t(:auth_search), "#", :href =>"javascript:slideonlyone('search_auth');"%></li>
+	  <li><% link_to t(:book_search),"#",:href =>"javascript:slideonlyone('search_book');"%></li>
+	  <li><% link_to t(:edit_search), "#", :href =>"javascript:slideonlyone('search_edit');" %></li>
+	  <li><% link_to t(:genre_search), "#", :href =>"javascript:slideonlyone('search_genre');" %></li>
+	  <li> <% link_to t(:book_index), livres_path %></li>
+            
+    </ul>-->
+	
+	<ul id="menu">
+	<li><a href="#"><%= t(:searches) %></a>
+		<ul>
+			<li><%= link_to t(:auth_search), "#", :href =>"javascript:slideonlyone('search_auth');"%></li>
+			<li><%= link_to t(:book_search),"#",:href =>"javascript:slideonlyone('search_book');"%></li>
+			<li><%= link_to t(:edit_search), "#", :href =>"javascript:slideonlyone('search_edit');" %></li>
+			<li><%= link_to t(:genre_search), "#", :href =>"javascript:slideonlyone('search_genre');"%></li>
+		</ul>
+	</li>
+	<li><a href="#"><%= t(:lists) %></a>
+		<ul>
+			<li><%= link_to t(:book_index), livres_path %></li>
+			<li><%= link_to t(:auth_index), search_path(liste_auth: true) %></li>
+			<li><%= link_to t(:edit_index), search_path(liste_edit: true) %></li>
+			<li><%= link_to t(:genre_index), search_path(liste_genre: true) %></li>
+			<li><%= link_to t(:read_index), livres_path(liste_alire: true) %></li>
+		</ul>
+	</li>
+	<li><%= link_to t(:stats), stats_path %></li>
+</ul>
+  <% end %>
 </header>
+
+
+
+
+
+
+
+
+
+
+
+

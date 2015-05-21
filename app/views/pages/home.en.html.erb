@@ -1,0 +1,6 @@
+﻿<h1>Welcome to my library management web application</h1>
+<% if user_signed_in? %>
+			   <%= link_to t(:index), livres_path %>
+<% else%>
+<p>Please login to access the various features of the application</p>
+<% end %>

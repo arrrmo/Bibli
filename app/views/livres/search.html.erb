@@ -1,0 +1,33 @@
+﻿<div class="apple_pagination page_info">
+      <%= page_entries_info @results %>
+    </div>
+	<br/>
+<table name="search_results">
+<% @results.in_groups_of(1).each do |results| %>
+	<% results.select! {|x| !x.nil?} %>
+	<tr>
+		<% results.each do |result| %>
+		
+			<td>
+			<div name="search_results">
+			<% if params[:nom_auteur] || params[:liste_auth] %>
+			<%cpt=Livre.joins(:auteurs).where(["nom_auteur  LIKE ? AND prenom_auteur LIKE ?  ", "%#{result.nom_auteur}%", "%#{result.prenom_auteur}%"]).count%>
+			<%= link_to  result.prenom_auteur.capitalize+" "+result.nom_auteur.capitalize + " ( #{cpt.to_s} )", livres_path({prenom_auteur: "#{result.prenom_auteur}", nom_auteur: "#{result.nom_auteur}" } )%> 
+			<% elsif params[:nom_editeur] || params[:liste_edit]%>
+			<% edit_nom = Editeur.find_by_nom_editeur(result.nom_editeur)%>
+			<% cpt=Livre.where(["editeur_id = ?", edit_nom.id ]).count%>
+			<%= link_to result.nom_editeur.capitalize + " ( #{cpt.to_s} )", livres_path({nom_editeur: "#{result.nom_editeur}" })%>
+			<% elsif params[:nom_genre] || params[:liste_genre] %>
+			<%cpt=Livre.joins(:genres).where(["nom_genre  LIKE ? ", "%#{result.nom_genre}%"]).count%>
+			<%= link_to result.nom_genre.capitalize + " ( #{cpt.to_s} )", livres_path({nom_genre: "#{result.nom_genre}" })%>
+			<% end %>
+			</div></td>
+	   <% end %> 
+   </tr>
+   <% end %>
+</table>
+<br/>
+<br/>
+<div class="apple_pagination">
+    <%= will_paginate @results%>
+  </div>

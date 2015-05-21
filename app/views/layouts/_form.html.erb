@@ -1,0 +1,70 @@
+﻿<% if @livre.new_record? %>
+<%action={:url => {:action => :create}} ; nouveau_livre=true%>
+<%else%>
+<%action={}%>
+<%end%>
+<%= nested_form_for @livre, action do |f| %>
+<%i=1%>
+<%j=1%>
+	<%= f.fields_for :auteurs do |auteur_form| %>
+	<div class="prenom_auteur">
+        <%= auteur_form.label :prenom_auteur, "Prénom Auteur #{i} :"%>
+        <%= auteur_form.text_field :prenom_auteur,  placeholder: "Entrez ici le prénom de l'auteur" %>
+	</div>
+	<div class="nom_auteur">
+        <%= auteur_form.label  :nom_auteur, "Nom Auteur #{i}  :"%>
+        <%= auteur_form.text_field :nom_auteur,  placeholder: "Entrez ici le nom de l'auteur"%>
+	</div>
+	<%i+=1%>
+	<% end %>
+	<%if nouveau_livre%>
+	<%= f.link_to_add "Ajouter un auteur supplémentaire", :auteurs %>
+	<%end%>
+	<%= f.fields_for :editeur do |editeur_form| %>
+	<div class="nom_editeur">
+        <%= editeur_form.label  :nom_editeur, "Nom Editeur :"%>
+        <%= editeur_form.text_field :nom_editeur,  placeholder: "Entrez ici le nom de l'editeur"%>
+	</div>
+	<% end %>
+	<%= f.fields_for :genres do |genre_form| %>
+	<div class="nom_genre">
+        <%= genre_form.label :nom_genre, "Nom Genre #{j} :"%>
+        <%= genre_form.text_field :nom_genre,  placeholder: "Entrez ici le Genre du livre" %>
+	</div>
+	<%j+=1%>
+	<% end %>
+	<%if nouveau_livre%>
+	<%= f.link_to_add "Ajouter un genre supplémentaire", :genres %>
+	<% end %>
+	<div class="titre">
+		<%= f.label :titre, "Titre : "%>
+		<%= f.text_field :titre, placeholder: "Entrez ici le titre du livre"%>
+	</div>
+	<div class="description">
+		<%= f.label :description, "Description : "%><br/>
+		<%= f.text_area :description, size:"2x2" ,placeholder: "Entrez ici la description du livre"%>
+	</div>
+	<div class="langue">
+		<%= f.label :langue, "Langue : "%>
+		<%= f.text_field :langue, placeholder: "Entrez ici la langue du livre"%>
+	</div>
+	<div class="annee">
+		<%d=DateTime.now.year%>
+		<%= f.label :annee, "Année de parution : "%>
+		<%= number_field :livre,:annee,in: 1..d, step: 1 %>
+	</div>
+	<div class="isbn">
+		<%= f.label :isbn, "ISBN : "%>
+		<%= f.text_field :isbn, placeholder: "Entrez ici l'ISBN du livre"%>
+	</div>
+	<div class="alire">
+		<%= f.label :alire_true,"Livre à lire "%>
+		<%= radio_button :livre ,:alire, "true" %>
+		<%= f.label :alire_false,"Livre lu "%>
+		<%= radio_button :livre, :alire, "false" %>
+	</div>
+	<div class="actions">
+		<%=f.submit "Valider", data: {confirm: "Confirmer ?"} %>
+	</div>
+
+<% end %>

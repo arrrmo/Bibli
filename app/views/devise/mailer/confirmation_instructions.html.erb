@@ -1,0 +1,12 @@
+﻿<p>Bienvenue <%= @resource.pseudo %> !</p>
+
+<p>Vous venez de créer un compte pour accéeder à l'application de gestion de ma bibliothèque.</p>
+<p>Rappel des informations du compte :
+Pseudo : <%= @resource.pseudo%> <br/>
+Prénom : <%= @resource.prenom_user%> <br/>
+Nom : <%= @resource.nom_user%> <br/>
+Email : <%= @resource.email %> <br/>
+</p>
+<p>Veuillez cliquer sur le lien ci-dessous afin de valider l'adresse email et de finaliser la création du compte :</p>
+
+<center><p> >>>>> <%= link_to "Valider le compte", confirmation_url(@resource, confirmation_token: @token) %> <<<<< </p></center>
